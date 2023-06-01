@@ -15,8 +15,7 @@ func main() {
 	notification, err := builder.Build()
 
 	if err != nil {
-		fmt.Println("Error occured when creation notification", err)
-
+		fmt.Println("Error occurred when creation notification", err)
 	}
 
 	fmt.Printf(" Notificaton :%+v", notification)

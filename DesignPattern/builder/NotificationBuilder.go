@@ -50,7 +50,7 @@ func (nb *NotificationBuilder) Build() (*Notification, error) {
 	}
 
 	if nb.Priority > 5 {
-		return nil, fmt.Errorf("priority shoul be less than 5")
+		return nil, fmt.Errorf("priority should be less than 5")
 	}
 	return &Notification{
 		title:    nb.Title,
