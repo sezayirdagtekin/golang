@@ -1,0 +1,20 @@
+-- public.product definition
+
+-- Drop table
+
+-- DROP TABLE public.product;
+
+CREATE TABLE public.product (
+	id int8 NULL,
+	"name" varchar NULL,
+	price float8 NULL,
+	inventory int8 NULL
+);
+
+
+INSERT INTO public.product
+(id, "name", price, inventory)
+VALUES(1, 'Samsung TV', 2300, 3);
+INSERT INTO public.product
+(id, "name", price, inventory)
+VALUES(2, 'Sonny Camera ', 1500, 1);
