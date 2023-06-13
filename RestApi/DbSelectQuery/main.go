@@ -16,7 +16,7 @@ const (
 )
 
 func main() {
-
+	log.Println("main...")
 	connStr := getConnectionString()
 	//log.Println("connection info:", connStr)
 

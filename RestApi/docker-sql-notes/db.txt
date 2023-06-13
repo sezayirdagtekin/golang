@@ -5,16 +5,15 @@
 -- DROP TABLE public.product;
 
 CREATE TABLE public.product (
-	id int8 NULL,
-	"name" varchar NULL,
+	productid int8 NULL,
+	productname varchar NULL,
 	price float8 NULL,
 	inventory int8 NULL
 );
 
-
 INSERT INTO public.product
-(id, "name", price, inventory)
-VALUES(1, 'Samsung TV', 2300, 3);
+(productid, productname, inventory, price)
+VALUES(1, 'Samsung TV', 3, 2300.0);
 INSERT INTO public.product
-(id, "name", price, inventory)
-VALUES(2, 'Sonny Camera ', 1500, 1);
+(productid, productname, inventory, price)
+VALUES(2, 'Sonny Camera ', 1, 1500.0);
