@@ -11,10 +11,10 @@ import (
 )
 
 type Product struct {
-	ProductId int     `json:"Id"`
-	Name      string  `json:"Name"`
-	Inventory int     `json:"Inventory"`
-	Price     float64 `json:"Price"`
+	ProductId   int     `json:"id"`
+	ProductName string  `json:"name"`
+	Inventory   int     `json:"inventory"`
+	Price       float64 `json:"price"`
 }
 
 const (
@@ -43,22 +43,33 @@ func getConnectionString() string {
 }
 
 func getProducts(w http.ResponseWriter, r *http.Request) {
-	log.Println("getProducts...")
 	connStr := getConnectionString()
-
-	db, err := sql.Open("postgres", connStr)
+	products, err := getAllProducts(connStr)
 
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
+	response, _ := json.Marshal(products)
 	w.Header().Set("Content-Type", "application/json")
+	w.Write(response)
+	w.WriteHeader(http.StatusOK)
+
+}
+
+func getAllProducts(connStr string) ([]Product, error) {
+	db, err := sql.Open("postgres", connStr)
+
+	if err != nil {
+		log.Fatal(err.Error())
+		return nil, err
+	}
 
 	rows, err := db.Query("SELECT productid ,productname ,inventory ,price  FROM  product p ")
 
 	if err != nil {
 		log.Fatal(err.Error())
-
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -67,12 +78,9 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var p Product
 
-		rows.Scan(&p.ProductId, &p.Name, &p.Inventory, &p.Price)
+		rows.Scan(&p.ProductId, &p.ProductName, &p.Inventory, &p.Price)
 		products = append(products, p)
-		fmt.Println("Product:", p.ProductId, p.Name, p.Price, p.Inventory)
+		fmt.Println("Product:", p.ProductId, p.ProductName, p.Price, p.Inventory)
 	}
-	response, _ := json.Marshal(products)
-	w.Write(response)
-	w.WriteHeader(http.StatusOK)
-
+	return products, nil
 }
