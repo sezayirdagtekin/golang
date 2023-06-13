@@ -26,7 +26,7 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	rows, err := db.Query("select  id, name, inventory,price FROM product")
+	rows, err := db.Query("SELECT productid ,productname ,inventory ,price  FROM  product p ")
 
 	if err != nil {
 		log.Fatal(err.Error())
