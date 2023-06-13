@@ -6,7 +6,16 @@ PS C:\development\RestApi\DbSelectQuery> go get -u github.com/lib/pq
 go: downloading github.com/lib/pq v1.10.9
 go: added github.com/lib/pq v1.10.9
 
+#LINK for routers
+https://www.alexedwards.net/blog/which-go-router-should-i-use
+
+#Add one router
+PS C:\development\RestApi> go get -u github.com/gorilla/mux
+go: added github.com/gorilla/mux v1.8.0
+
 
 #Get current database
 	SELECT current_database();
 	postgres
+
+
