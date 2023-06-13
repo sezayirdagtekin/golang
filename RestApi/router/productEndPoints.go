@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
+	"io"
 	"log"
 	"net/http"
 )
@@ -29,6 +30,7 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", getProducts).Methods("GET")
+	r.HandleFunc("/", createProduct).Methods("POST")
 	http.Handle("/", r)
 	fmt.Println("server started and listening on localhost:9003")
 	http.ListenAndServe(":9003", nil)
@@ -40,6 +42,34 @@ func getConnectionString() string {
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 	return psqlInfo
+}
+
+func createProduct(w http.ResponseWriter, r *http.Request) {
+	connStr := getConnectionString()
+	db, err := sql.Open("postgres", connStr)
+
+	handleError(err)
+
+	body, _ := io.ReadAll(r.Body)
+	var p Product
+	json.Unmarshal(body, &p)
+
+	query := "INSERT INTO product (productid, productname, price, inventory) VALUES($1, $2, $3, $4)"
+
+	_, err = db.Exec(query, p.ProductId, p.ProductName, p.Price, p.Inventory)
+
+	handleError(err)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(p)
+	w.WriteHeader(http.StatusCreated)
+
+}
+
+func handleError(err error) {
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 }
 
 func getProducts(w http.ResponseWriter, r *http.Request) {
